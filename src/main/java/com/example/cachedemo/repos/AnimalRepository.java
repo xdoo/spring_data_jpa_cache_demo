@@ -24,9 +24,6 @@ public interface AnimalRepository extends CrudRepository<Animal, UUID> {
 
     @Override
     @Cacheable(key = "#p0")
-    public Animal findOne(UUID oid);
-   
-    
-    
+    public Animal findOne(UUID oid);   
     
 }
