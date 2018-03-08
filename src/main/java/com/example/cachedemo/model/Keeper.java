@@ -28,11 +28,7 @@ import org.hibernate.annotations.Type;
 @Table(name = "Keeper")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Keeper {
-
-    @Column(name = "OID")
-    @Id
-    public String oid;
+public class Keeper extends BaseEntity {
 
     @Column(name = "name")
     String name;

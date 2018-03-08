@@ -2,6 +2,7 @@ package com.example.cachedemo.repos;
 
 import com.example.cachedemo.CacheDemoApplication;
 import com.example.cachedemo.model.Animal;
+import java.util.UUID;
 import java.util.logging.Logger;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.data.repository.CrudRepository;
@@ -10,7 +11,7 @@ import org.springframework.data.repository.CrudRepository;
  *
  * @author claus
  */
-public interface AnimalRepository extends CrudRepository<Animal, String> {
+public interface AnimalRepository extends CrudRepository<Animal, UUID> {
     
     static final Logger LOGGER = Logger.getLogger(CacheDemoApplication.class.getName());
     final String CACHE = "ANIMAL_CACHE";
@@ -21,7 +22,7 @@ public interface AnimalRepository extends CrudRepository<Animal, String> {
 
     @Override
     @CachePut(value = CACHE, key = "#p0")
-    public Animal findOne(String oid);
+    public Animal findOne(UUID oid);
    
     
     

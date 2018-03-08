@@ -32,18 +32,18 @@ public class CacheDemoApplicationTests {
     @Test
     public void saveAnimal() {
         Animal animal = this.createAnimal();
-        this.animalRepo.save(animal);
+        Animal saved = this.animalRepo.save(animal);
         this.checkSave();
         for (int i = 0; i < 100; i++) {
-            Animal find = this.animalRepo.findOne(OID_BAGIRA);
+            Animal find = this.animalRepo.findOne(saved.getOid());
             assertNotNull(find);
         }
     }
 
     private Animal createAnimal() {
-        return new Animal(OID_BAGIRA, "Bagira", Lists.newArrayList(
-                new Keeper(OID_HANS, "Hans"),
-                new Keeper(OID_PETER, "Peter")
+        return new Animal("Bagira", Lists.newArrayList(
+                new Keeper("Hans"),
+                new Keeper("Peter")
         ));
     }
 

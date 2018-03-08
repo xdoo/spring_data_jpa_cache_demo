@@ -3,6 +3,7 @@ package com.example.cachedemo.repos;
 
 import com.example.cachedemo.CacheDemoApplication;
 import com.example.cachedemo.model.Keeper;
+import java.util.UUID;
 import java.util.logging.Logger;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.data.repository.CrudRepository;
@@ -11,7 +12,7 @@ import org.springframework.data.repository.CrudRepository;
  *
  * @author claus
  */
-public interface KeeperRepository extends CrudRepository<Keeper, String> {
+public interface KeeperRepository extends CrudRepository<Keeper, UUID> {
     
     static final Logger LOGGER = Logger.getLogger(CacheDemoApplication.class.getName());
     final String CACHE = "KEEPER_CACHE";
@@ -22,7 +23,7 @@ public interface KeeperRepository extends CrudRepository<Keeper, String> {
 
     @Override
     @CachePut(value = CACHE, key = "#p0")
-    public Keeper findOne(String oid);
+    public Keeper findOne(UUID oid);
     
     
 }

@@ -28,12 +28,7 @@ import org.hibernate.annotations.Type;
 @Table(name = "Animal")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Animal {
-    
-    @Column(name = "OID")
-    @Id
-    public String oid;
-    
+public class Animal extends BaseEntity {
     
     @Column(name = "name")
     String name;
