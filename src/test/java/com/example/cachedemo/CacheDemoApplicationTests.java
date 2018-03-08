@@ -4,6 +4,7 @@ import com.example.cachedemo.model.Animal;
 import com.example.cachedemo.model.Keeper;
 import com.example.cachedemo.repos.AnimalRepository;
 import com.example.cachedemo.repos.KeeperRepository;
+import com.example.cachedemo.services.FooService;
 import com.google.common.collect.Lists;
 import java.util.UUID;
 import lombok.extern.java.Log;
@@ -28,6 +29,9 @@ public class CacheDemoApplicationTests {
 
     @Autowired
     KeeperRepository keeperRepo;
+    
+    @Autowired
+    FooService service;
 
     @Test
     public void saveAnimal() {
@@ -37,6 +41,13 @@ public class CacheDemoApplicationTests {
         for (int i = 0; i < 100; i++) {
             Animal find = this.animalRepo.findOne(saved.getOid());
             assertNotNull(find);
+        }
+    }
+    
+    @Test
+    public void findKeeperInService() {
+        for (int i = 0; i < 100; i++) {
+            this.service.findKeeper("4711");
         }
     }
 
