@@ -8,6 +8,7 @@ import com.example.cachedemo.services.FooService;
 import com.google.common.collect.Lists;
 import java.util.UUID;
 import lombok.extern.java.Log;
+import static org.apache.tomcat.jni.Lock.name;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,10 +21,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 @Log
 public class CacheDemoApplicationTests {
 
-    private static final String OID_BAGIRA = "b5af24cc-95bd-4558-9f3c-3899c5b4398d";
-    private static final String OID_HANS = "9886dd07-6d99-4699-ac4c-ed107f4aff97";
-    private static final String OID_PETER = "5cd67419-daec-4ba3-8784-d3d921a149db";
-
     @Autowired
     AnimalRepository animalRepo;
 
@@ -33,7 +30,7 @@ public class CacheDemoApplicationTests {
     @Autowired
     FooService service;
 
-    @Test
+//    @Test
     public void saveAnimal() {
         Animal animal = this.createAnimal();
         Animal saved = this.animalRepo.save(animal);
@@ -45,10 +42,39 @@ public class CacheDemoApplicationTests {
     }
     
     @Test
+    public void testReferenceKeeper() {
+        Keeper torben = this.keeperRepo.save(new Keeper("Torben"));
+        Animal nemo = this.animalRepo.save(new Animal("Nemo", Lists.newArrayList(torben)));
+        assertNotNull(nemo);
+    }
+
+//    @Test
+    public void testSaveAnimalWithKeepersOverFooServiceNotAutocreatedID() {
+        Keeper torben = this.keeperRepo.save(this.createKeeper("Torben"));
+        Keeper malte = this.keeperRepo.save(this.createKeeper("Malte"));
+        Animal dumbo = this.service.saveAnimalWithRef("Dumbo", torben.getOid(), malte.getOid());
+        assertNotNull(dumbo);
+    }
+    
+//    @Test
+    public void testSaveAnimalWithKeepersOverRepositoryNotAutocreatedID() {
+        Keeper torben = this.keeperRepo.save(this.createKeeper("Torben"));
+        Keeper malte = this.keeperRepo.save(this.createKeeper("Malte"));
+        Animal dumbo = this.animalRepo.save(this.createAnimal("dumbo", torben, malte));
+        assertNotNull(dumbo);
+    }
+    
+//    @Test
     public void findKeeperInService() {
         for (int i = 0; i < 100; i++) {
             this.service.findKeeper("4711");
         }
+    }
+    
+    private Keeper createKeeper(String name) {
+        Keeper keeper = new Keeper(name);
+        keeper.setOid(UUID.randomUUID());
+        return keeper;
     }
 
     private Animal createAnimal() {
@@ -56,6 +82,12 @@ public class CacheDemoApplicationTests {
                 new Keeper("Hans"),
                 new Keeper("Peter")
         ));
+    }
+    
+    private Animal createAnimal(String name, Keeper... keepers) {
+        Animal animal = new Animal(name, Lists.newArrayList(keepers));
+        animal.setOid(UUID.randomUUID());
+        return animal;
     }
 
     private void checkSave() {
