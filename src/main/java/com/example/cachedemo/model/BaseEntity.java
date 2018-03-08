@@ -9,6 +9,7 @@ import javax.persistence.MappedSuperclass;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
+import org.springframework.data.jpa.domain.AbstractPersistable;
 
 /**
  *

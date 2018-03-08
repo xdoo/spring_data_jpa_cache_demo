@@ -46,6 +46,15 @@ public class CacheDemoApplicationTests {
         Keeper torben = this.keeperRepo.save(new Keeper("Torben"));
         Animal nemo = this.animalRepo.save(new Animal("Nemo", Lists.newArrayList(torben)));
         assertNotNull(nemo);
+        assertEquals(1, this.animalRepo.count());
+        assertEquals(1, this.keeperRepo.count());
+        Keeper hans = this.keeperRepo.save(new Keeper("Hans"));
+        Keeper peter = this.keeperRepo.save(new Keeper("Peter"));
+        Keeper maja = this.keeperRepo.save(new Keeper("Maja"));
+        assertEquals(4, this.keeperRepo.count());
+        peter.setName("Petra");
+        this.keeperRepo.save(peter);
+        assertEquals(4, this.keeperRepo.count());
     }
 
 //    @Test

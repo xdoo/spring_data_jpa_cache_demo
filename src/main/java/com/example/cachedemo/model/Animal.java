@@ -32,8 +32,7 @@ public class Animal extends BaseEntity {
     @JoinTable(name = "Animal_KeeperList", joinColumns = {
         @JoinColumn(name = "animal_oid")}, inverseJoinColumns = {
         @JoinColumn(name = "keeperList_oid")})
-    @ManyToMany(cascade = {CascadeType.MERGE})
-//    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany
     List<Keeper> keepers = new ArrayList<>();
     
 }
